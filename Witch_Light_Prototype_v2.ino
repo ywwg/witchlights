@@ -90,9 +90,9 @@ static void chase(uint32_t c)
 	strip.show();
 
 	int indexPixel = 0;
+	destPixel = indexPixel + random(destVariance, 80) + 3;
 
 	while (indexPixel < strip.numPixels()) {
-  	destPixel = indexPixel + random(destVariance, 80) + 3;
 		for(uint16_t i=indexPixel; i<destPixel && i < strip.numPixels(); i++) {
 		    strip.setPixelColor(i  , c); // Draw new pixel
 		    for (int chase = 1; chase < 9 && i - chase >= 0; ++chase) {
@@ -106,6 +106,7 @@ static void chase(uint32_t c)
 
 		indexPixel = destPixel; // update current location
 		hoverRandom = random(destVariance, 80);
+		destPixel = indexPixel + hoverRandom;
     hoverTime = random(5, 40);
 
     // This loop of 10 doesn't do anything (j is not used, indexpixel not updated)
