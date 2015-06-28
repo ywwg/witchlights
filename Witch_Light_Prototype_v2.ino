@@ -11,11 +11,7 @@ int pir1State = LOW;
 int loc0val = 0;                // variable for reading the pin status
 int loc1val = 1;
 
-int indexPixel = 0;             // start pixel for animations
-int destPixel = 10;             // destination pixel for animations
-int endPixel = N_LEDS;					//
-int hoverTime = 20;							// how long the sprite hovers for
-int destVariance = 20;					// the randomness between hover locations
+const int destVariance = 20;					// the randomness between hover locations
 
 int hoverRandom;
 
@@ -90,7 +86,7 @@ static void chase(uint32_t c)
 	strip.show();
 
 	int indexPixel = 0;
-	destPixel = indexPixel + random(destVariance, 80) + 3;
+	int destPixel = indexPixel + random(destVariance, 80) + 3;
 
 	while (indexPixel < strip.numPixels()) {
 		for(uint16_t i=indexPixel; i<destPixel && i < strip.numPixels(); i++) {
@@ -107,7 +103,7 @@ static void chase(uint32_t c)
 		indexPixel = destPixel; // update current location
 		hoverRandom = random(destVariance, 80);
 		destPixel = indexPixel + hoverRandom;
-    hoverTime = random(5, 40);
+    int hoverTime = random(5, 40);
 
     // This loop of 10 doesn't do anything (j is not used, indexpixel not updated)
     // Pretty sure this is broken... it's chasing the same 8 pixels 3 times, and then setting
@@ -142,12 +138,9 @@ static void spriteMove(uint32_t c, int dir) // dir = +1: forwards, dir = -1: bac
 {
 	// Set indexPixel according to direction
 
-	if(dir == 1) {
-		// start pixel is 0
-		indexPixel = 0;
-		// end pixel is numPixels()
-		endPixel = strip.numPixels();
-	} else {
+  int indexPixel = 0;
+  int endPixel = strip.numPixels();
+	if (dir == -1) {
   	// start pixel == numpixels
 		indexPixel = strip.numPixels();
 		endPixel = 0;
