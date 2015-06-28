@@ -1,7 +1,7 @@
 #include <Adafruit_NeoPixel.h>
 
 #define PIN    6                // Pin for neopixels
-#define N_LEDS 150               // 30 meter test reel
+#define N_LEDS 150              // 30 meter test reel
 
 int ledPin = 13;                // choose the pin for the LED
 int loc0Pin = 3;                // choose the input pin (for PIR sensor)
@@ -11,7 +11,7 @@ int pir1State = LOW;
 int loc0val = 0;                // variable for reading the pin status
 int loc1val = 1;
 
-const int destVariance = 20;					// the randomness between hover locations
+const int destVariance = 20;          // the randomness between hover locations
 
 int hoverRandom;
 
@@ -24,14 +24,14 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDS, PIN, NEO_GRB + NEO_KHZ800);
 
 void setup()
 {
-	Serial.begin(9600);						// comment out when done debugging
-	delay(1000);									// pause to let serial communication start
-	Serial.println("Hello, World");
+  Serial.begin(9600);           // comment out when done debugging
+  delay(1000);                  // pause to let serial communication start
+  Serial.println("Hello, World");
 
   pinMode(ledPin, OUTPUT);      // declare LED as output
-  pinMode(loc0Pin, INPUT);     	// declare sensor as input
+  pinMode(loc0Pin, INPUT);      // declare sensor as input
   pinMode(loc1Pin, INPUT);
-	digitalWrite(ledPin, LOW);
+  digitalWrite(ledPin, LOW);
   randomSeed(analogRead(0));
   strip.begin();
   strip.show();
@@ -39,18 +39,18 @@ void setup()
 
 void loop()
 {
-  loc0val = digitalRead(loc0Pin);  	// read input loc0value
-  if (loc0val == HIGH) {            // check if the input is HIGH
-    digitalWrite(ledPin, HIGH);  // turn LED ON
+  loc0val = digitalRead(loc0Pin);    // read input loc0value
+  if (loc0val == HIGH) {             // check if the input is HIGH
+    digitalWrite(ledPin, HIGH);      // turn LED ON
     if (pir0State == LOW) {
       // we have just turned on
       //chase(0x633051);
       // We only want to print on the output change, not state
-			spriteMove(0xFFFFFF, 1);
+      spriteMove(0xFFFFFF, 1);
       pir0State = HIGH;
     }
   } else {
-    digitalWrite(ledPin, LOW); 	// turn LED OFF
+    digitalWrite(ledPin, LOW);   // turn LED OFF
     if (pir0State == HIGH){
 
       // we have just turned off
@@ -59,9 +59,9 @@ void loop()
     }
   }
 
- loc1val = digitalRead(loc1Pin);  	// read input loc0value
+ loc1val = digitalRead(loc1Pin);    // read input loc0value
  if (loc1val == HIGH) {            // check if the input is HIGH
-   digitalWrite(ledPin, HIGH);  		// turn LED ON
+   digitalWrite(ledPin, HIGH);      // turn LED ON
    if (pir1State == LOW) {
      // we have just turned on
      // chase(0x633051);
@@ -69,7 +69,7 @@ void loop()
      pir1State = HIGH;
    }
  } else {
-   digitalWrite(ledPin, LOW); 			// turn LED OFF
+   digitalWrite(ledPin, LOW);       // turn LED OFF
    if (pir1State == HIGH){
 
      // we have just turned off
@@ -82,34 +82,34 @@ void loop()
 
 static void chase(uint32_t c)
 {
-	unsigned long currentMillis = millis();
-	strip.show();
+  unsigned long currentMillis = millis();
+  strip.show();
 
-	int indexPixel = 0;
-	int destPixel = indexPixel + random(destVariance, 80) + 3;
+  int indexPixel = 0;
+  int destPixel = indexPixel + random(destVariance, 80) + 3;
 
-	while (indexPixel < strip.numPixels()) {
-		for(uint16_t i=indexPixel; i<destPixel && i < strip.numPixels(); i++) {
-		    strip.setPixelColor(i  , c); // Draw new pixel
-		    for (int chase = 1; chase < 9 && i - chase >= 0; ++chase) {
+  while (indexPixel < strip.numPixels()) {
+    for(uint16_t i=indexPixel; i<destPixel && i < strip.numPixels(); i++) {
+        strip.setPixelColor(i  , c); // Draw new pixel
+        for (int chase = 1; chase < 9 && i - chase >= 0; ++chase) {
           strip.setPixelColor(i-chase, DimColor(strip.getPixelColor(i-chase)));
         }
 
-				// strip.setPixelColor(i-3, 0); // Erase pixel a few steps back
-		    strip.show();
-		    delay(random(5,interval));
-		}
+        // strip.setPixelColor(i-3, 0); // Erase pixel a few steps back
+        strip.show();
+        delay(random(5,interval));
+    }
 
-		indexPixel = destPixel; // update current location
-		hoverRandom = random(destVariance, 80);
-		destPixel = indexPixel + hoverRandom;
+    indexPixel = destPixel; // update current location
+    hoverRandom = random(destVariance, 80);
+    destPixel = indexPixel + hoverRandom;
     int hoverTime = random(5, 40);
 
     // This loop of 10 doesn't do anything (j is not used, indexpixel not updated)
     // Pretty sure this is broken... it's chasing the same 8 pixels 3 times, and then setting
     // a single pixel on and off
-		for (int j=0; j<hoverTime; j++) {  //do 10 cycles of chasing
-		  for (int q=0; q < 3; q++) {
+    for (int j=0; j<hoverTime; j++) {  //do 10 cycles of chasing
+      for (int q=0; q < 3; q++) {
         strip.setPixelColor(indexPixel-1, DimColor(strip.getPixelColor(indexPixel-1)));
         strip.setPixelColor(indexPixel-2, DimColor(strip.getPixelColor(indexPixel-2)));
         strip.setPixelColor(indexPixel-3, DimColor(strip.getPixelColor(indexPixel-3)));
@@ -119,67 +119,67 @@ static void chase(uint32_t c)
         strip.setPixelColor(indexPixel-7, DimColor(strip.getPixelColor(indexPixel-7)));
         strip.setPixelColor(indexPixel-8, DimColor(strip.getPixelColor(indexPixel-8)));
         // this only happens once.  maybe index of indexPixel+3 you want a higher value?
-		    for (int i=indexPixel; i < indexPixel+3; i=i+3) {
-		      strip.setPixelColor(i+q, c);    //turn every third pixel on
-		    }
-		    strip.show();
+        for (int i=indexPixel; i < indexPixel+3; i=i+3) {
+          strip.setPixelColor(i+q, c);    //turn every third pixel on
+        }
+        strip.show();
 
-		    delay(random(15,interval-10));
+        delay(random(15,interval-10));
 
-		    for (int i=indexPixel; i < indexPixel+3; i=i+3) {
-		      strip.setPixelColor(i+q, 0x111111);        //turn every third pixel off
-		    }
-		  }
-		}
-	}
+        for (int i=indexPixel; i < indexPixel+3; i=i+3) {
+          strip.setPixelColor(i+q, 0x111111);        //turn every third pixel off
+        }
+      }
+    }
+  }
 }
 
 static void spriteMove(uint32_t c, int dir) // dir = +1: forwards, dir = -1: backwards
 {
-	// Set indexPixel according to direction
+  // Set indexPixel according to direction
 
   int indexPixel = 0;
   int endPixel = strip.numPixels();
-	if (dir == -1) {
-  	// start pixel == numpixels
-		indexPixel = strip.numPixels();
-		endPixel = 0;
+  if (dir == -1) {
+    // start pixel == numpixels
+    indexPixel = strip.numPixels();
+    endPixel = 0;
   }
-	// debug
-	Serial.print(indexPixel);
-	Serial.print(",");
-	Serial.println(dir);
+  // debug
+  Serial.print(indexPixel);
+  Serial.print(",");
+  Serial.println(dir);
   // draw the thing
-	drawSprite(c, indexPixel, endPixel, dir);
+  drawSprite(c, indexPixel, endPixel, dir);
 }
 
 // c = color, i = indexPixel, e = endPixel, d = direction
 static void drawSprite(uint32_t c, int indexPixel, int endPixel, int direction)
 {
-	// random pause
-	int r = random(20, 80);
-	Serial.print("random ");
-	Serial.print(r);
-	Serial.print(",");
-	Serial.println(i % r);
+  // random pause
+  int r = random(20, 80);
+  Serial.print("random ");
+  Serial.print(r);
+  Serial.print(",");
+  Serial.println(i % r);
 
-	for (int i = indexPixel; i < endPixel; i += direction) {
+  for (int i = indexPixel; i < endPixel; i += direction) {
     // save the last time you blinked the strip and moved the indexpixel
     previousMillis = currentMillis;
-		Serial.println(currentMillis);
+    Serial.println(currentMillis);
 
-		if (i == r) {
-			Serial.println("paused!");
-			// get rid of delay after testing
-			delay (2000);
-		}
+    if (i == r) {
+      Serial.println("paused!");
+      // get rid of delay after testing
+      delay (2000);
+    }
 
-		Serial.print("draw: ");
-		Serial.print(i);
-		Serial.print(",");
-		Serial.println(e);
-		delay(interval);
-	}
+    Serial.print("draw: ");
+    Serial.print(i);
+    Serial.print(",");
+    Serial.println(e);
+    delay(interval);
+  }
 }
 
 
