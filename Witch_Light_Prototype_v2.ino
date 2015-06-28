@@ -54,7 +54,7 @@ void loop()
       // we have just turned on
       //chase(0x633051);
       // We only want to print on the output change, not state
-			spriteMove(0xFFFFFF, -1);
+			spriteMove(0xFFFFFF, 1);
       pir0State = HIGH;
     }
   } else {
@@ -165,31 +165,47 @@ static void spriteMove(uint32_t c, int dir) // dir = +1: forwards, dir = -1: bac
 		indexPixel = strip.numPixels();
 		endPixel = 0;
   }
-	drawSprite(c, indexPixel, endPixel, dir);	
 	// debug
 	Serial.print(indexPixel);
 	Serial.print(",");
 	Serial.println(dir);
-	
+  // draw the thing
+	drawSprite(c, indexPixel, endPixel, dir);	
 }	
 
 // c = color, i = indexPixel, e = endPixel, d = direction
 static void drawSprite(uint32_t c, int i, int e, int d) 
 {
-	unsigned long currentMillis = millis();
-  if(currentMillis - previousMillis >= interval) {
-    // save the last time you blinked the strip and moved the indexpixel 
-    previousMillis = currentMillis;   
-		Serial.println(currentMillis);
-
-		Serial.print(i);
-		Serial.print(",");
-		Serial.println(e);
+	// random pause
+	int r = random(20,80);
+	Serial.print("random ");
+	Serial.print(r);
+	Serial.print(",");
+	Serial.println(i % r);
+	
+	while	(i != e) 
+	{
+		unsigned long currentMillis = millis();
+	  if(currentMillis - previousMillis >= interval) 
+		{
+	    // save the last time you blinked the strip and moved the indexpixel 
+	    previousMillis = currentMillis;   
+			Serial.println(currentMillis);
 		
-		
-		i+= d;
-		
-		
+			i+= d;
+			if (i % r == 0); 
+			{
+				Serial.println("paused!");
+				// get rid of delay after testing
+				delay (2000);
+			}		
+			
+			Serial.print("draw: ");
+			Serial.print(i);
+			Serial.print(",");
+			Serial.println(e);
+			
+		}
 	} 
 }	
 
