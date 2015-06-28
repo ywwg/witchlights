@@ -177,15 +177,12 @@ static void spriteMove(uint32_t c, int dir) // dir = +1: forwards, dir = -1: bac
 static void drawSprite(uint32_t c, int i, int e, int d) 
 {
 	// random pause
-	int r = random(20,80);
-	Serial.print("random ");
-	Serial.print(r);
-	Serial.print(",");
-	Serial.println(i % r);
+
 	
 	while	(i != e) 
 	{
 		unsigned long currentMillis = millis();
+		unsigned long pauseMillis = currentMillis + random(5000, 8001);
 	  if(currentMillis - previousMillis >= interval) 
 		{
 	    // save the last time you blinked the strip and moved the indexpixel 
@@ -193,11 +190,13 @@ static void drawSprite(uint32_t c, int i, int e, int d)
 			Serial.println(currentMillis);
 		
 			i+= d;
-			if (i % r == 0); 
+			
+			if (previousMillis - pauseMillis <= 0) 
 			{
 				Serial.println("paused!");
 				// get rid of delay after testing
 				delay (2000);
+				pauseMillis = currentMillis + random(5000, 8001);
 			}		
 			
 			Serial.print("draw: ");
