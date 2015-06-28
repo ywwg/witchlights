@@ -188,10 +188,12 @@ static void drawSprite(uint32_t c, int i, int e, int d)
 	    // save the last time you blinked the strip and moved the indexpixel 
 	    previousMillis = currentMillis;   
 			Serial.println(currentMillis);
+			Serial.println(pauseMillis);
+			Serial.println(previousMillis - pauseMillis);
 		
 			i+= d;
 			
-			if (previousMillis - pauseMillis <= 0) 
+			if (previousMillis - pauseMillis >= 0) 
 			{
 				Serial.println("paused!");
 				// get rid of delay after testing
