@@ -157,7 +157,7 @@ static void spriteMove(uint32_t c, int dir) // dir = +1: forwards, dir = -1: bac
 		indexPixel = 0;
 		// end pixel is numPixels()
 		endPixel = strip.numPixels();
-		drawSprite(c, indexPixel, endPixel, dir);
+
 		
 	} else if (dir == -1) 
   {
@@ -165,7 +165,7 @@ static void spriteMove(uint32_t c, int dir) // dir = +1: forwards, dir = -1: bac
 		indexPixel = strip.numPixels();
 		endPixel = 0;
   }
-	
+	drawSprite(c, indexPixel, endPixel, dir);	
 	// debug
 	Serial.print(indexPixel);
 	Serial.print(",");
@@ -181,10 +181,14 @@ static void drawSprite(uint32_t c, int i, int e, int d)
     // save the last time you blinked the strip and moved the indexpixel 
     previousMillis = currentMillis;   
 		Serial.println(currentMillis);
-		indexPixel += dir;
+
 		Serial.print(i);
 		Serial.print(",");
 		Serial.println(e);
+		
+		
+		i+= d;
+		
 		
 	} 
 }	
